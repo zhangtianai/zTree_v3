@@ -1,0 +1,53 @@
+
+ /**
+         * 递归获取子节点数据
+        */
+        test(arr, parent) {
+            arr.forEach((item) => {
+                if (item.children) {
+                    this.test(item.children, item);
+                } else {
+                    if (!item.children) {
+                        if (!parent.count) {
+                            parent.count = 0;
+                        }
+                        parent.count++;
+                    }
+                }
+            });
+            return arr;
+        },
+        /**
+         * 递归加数
+        */
+        checkIsChildren(item, flag) {
+            const children = item.children;
+            let num = 0;
+            for (let i = 0; i < children.length; i++) {
+                if (children[i].children) {
+                    const count = this.checkIsChildren(children[i], true);
+                    num += count;
+                    if (flag) {
+                        if (!item.num) item.num = 0;
+                        item.num += count;
+                    }
+                } else {
+                    num++;
+                    if (flag) {
+                        if (!item.num) item.num = 0;
+                        item.num++;
+                    }
+                }
+            }
+            return num;
+        },
+        filterResult(arr) {
+            arr.forEach(item => {
+                if (item.children) {
+                    item.num = this.checkIsChildren(item);
+                }
+            });
+            return arr;
+        },
+const result = this.test(this.treeData);
+const sumnummber = this.filterResult(result)[0];
